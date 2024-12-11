@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "199928338875",
+    "project_id": "nativecommonproject",
+    "storage_bucket": "nativecommonproject.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199928338875:android:a3a677b9c0a0838fa1cc9e",
+        "android_client_info": {
+          "package_name": "com.projectnative_dec10"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199928338875-sq8pgsee0pe470nvp95s1kf2s34a18t3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH1KRp7fQhKTesHG4mdrZVlHLgXJR-C8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199928338875-sq8pgsee0pe470nvp95s1kf2s34a18t3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "199928338875-ou4ids6m7jmfqbpcbnfjelvbn7jdfp7g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reactnativeClassProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199928338875:android:6541232e587e3586a1cc9e",
+        "android_client_info": {
+          "package_name": "com.reactreduxusingclass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199928338875-2eo8kurkheo3oqq10n841f0ni0v7b3do.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reactreduxusingclass",
+            "certificate_hash": "d810b3c78aacb0876c596214c5ceba17720d4657"
+          }
+        },
+        {
+          "client_id": "199928338875-sq8pgsee0pe470nvp95s1kf2s34a18t3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH1KRp7fQhKTesHG4mdrZVlHLgXJR-C8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199928338875-sq8pgsee0pe470nvp95s1kf2s34a18t3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "199928338875-ou4ids6m7jmfqbpcbnfjelvbn7jdfp7g.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reactnativeClassProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
