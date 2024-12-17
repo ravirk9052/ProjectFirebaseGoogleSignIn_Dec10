@@ -2,7 +2,9 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+import messaging from '@react-native-firebase/messaging';
 import React, {useState} from 'react';
+
 import {
   Image,
   SafeAreaView,
@@ -14,8 +16,9 @@ import {
 } from 'react-native';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 
+
 GoogleSignin.configure({
-  scopes: ['email'],
+  scopes: ['email', 'https://www.googleapis.com/auth/firebase.messaging'],
   webClientId:
     '199928338875-sq8pgsee0pe470nvp95s1kf2s34a18t3.apps.googleusercontent.com',
   offlineAccess: true,
@@ -32,16 +35,23 @@ interface IUsers {
 
 const SignInPage = () => {
   const [userInfoData, setuserInfo] = useState<IUsers>();
-//   console.log('35',userInfoData)
   const [loggedIn, setLoggdeIn] = useState<boolean>(false);
+  const checkFcmToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log('45-fcmToken',fcmToken);
+   } 
+  };
+
+
 
   const LoginWithGoogle = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       try {
-        const userInfo = await GoogleSignin.signIn() as {data:{user: IUsers}}
-        console.log('43',userInfo)
-        // console.log('56', JSON.stringify(userInfo?.data?.user));
+        const userInfo = (await GoogleSignin.signIn()) as {
+          data: {user: IUsers};
+        };
         setuserInfo(userInfo?.data?.user);
         setLoggdeIn(true);
       } catch (error) {
@@ -63,31 +73,38 @@ const SignInPage = () => {
     }
   };
 
-//   console.log('44', userInfoData);
+
+
+  const onPressAccessToken = async () => {
+    const token = await GoogleSignin.getTokens();
+    console.log('92-token', token.accessToken);
+  };
+
 
   return (
     <SafeAreaView style={styles.mainContainer}>
       <View style={styles.formContainer}>
         {loggedIn ? (
-          <View style={styles.profile}>
-            <Image
-              source={{uri: userInfoData?.photo}}
-              style={styles.imagePhoto}
-            />
-            <View style={styles.profileText}>
-                <Text>{userInfoData?.name}</Text>
-                <Text>{userInfoData?.email}</Text>
-            </View>
-
-            {/* {userInfoData ? (
+          <>
+            <View style={styles.profile}>
               <Image
-                source={{uri: userInfoData.photo}}
+                source={{uri: userInfoData?.photo}}
                 style={styles.imagePhoto}
               />
-            ) : (
-              <Text>Loading...</Text>
-            )} */}
-          </View>
+              <View style={styles.profileText}>
+                <Text>{userInfoData?.name}</Text>
+                <Text>{userInfoData?.email}</Text>
+              </View>
+            </View>
+            <View style={styles.btnContainer}>
+              <TouchableOpacity onPress={onPressAccessToken} style={styles.generateBtn}>
+                <Text style={styles.generateText}>Generate Access Token</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={checkFcmToken} style={styles.generateBtn}>
+                <Text style={styles.generateText}>Generate FCM Token</Text>
+              </TouchableOpacity>
+            </View>
+          </>
         ) : (
           <View>
             <View>
@@ -105,7 +122,10 @@ const SignInPage = () => {
               />
             </View>
             <View>
-              <TouchableOpacity style={styles.submitButton}>
+              <TouchableOpacity
+                style={styles.submitButton}
+                // onPress={() => DisplayPushNotification()}
+                >
                 <Text style={styles.submitText}>Submit</Text>
               </TouchableOpacity>
             </View>
@@ -116,7 +136,7 @@ const SignInPage = () => {
           {loggedIn ? (
             <View>
               <TouchableOpacity onPress={onPressLogout} style={styles.outBtn}>
-                <Text>Logout </Text>
+                <Text style={styles.signOutText}>Signout </Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -136,31 +156,6 @@ const SignInPage = () => {
       </View>
     </SafeAreaView>
   );
-  //   return (
-  //     <SafeAreaView style={styles.container}>
-  //       <View style={styles.content}>
-  //         <Text style={styles.header}>Google Sign-In</Text>
-  //         <TouchableOpacity onPress={LoginWithGoogle} style={styles.button}>
-  //           <Text style={styles.buttonText}>Sign In with Google</Text>
-  //         </TouchableOpacity>
-
-  //         {/* {userInfo ? (
-  //           <>
-  //             <Text style={styles.userInfo}>Hello, {userInfo.displayName}</Text>
-  //             <TouchableOpacity onPress={onSignOut} style={styles.button}>
-  //               <Text style={styles.buttonText}>Sign Out</Text>
-  //             </TouchableOpacity>
-  //           </>
-  //         ) : (
-  //           <>
-  //             <TouchableOpacity onPress={onSignIn} style={styles.button}>
-  //               <Text style={styles.buttonText}>Sign In with Google</Text>
-  //             </TouchableOpacity>
-  //           </>
-  //         )} */}
-  //       </View>
-  //     </SafeAreaView>
-  //   );
 };
 
 const styles = StyleSheet.create({
@@ -219,7 +214,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 10,
     borderRadius: 12,
-    backgroundColor: 'orange'
+    backgroundColor: 'orange',
   },
   container: {
     // flex: 1,
@@ -266,7 +261,7 @@ const styles = StyleSheet.create({
     // borderWidth: 0.1,
     width: responsiveWidth(90),
     backgroundColor: '#eeeeff',
-    borderRadius: 12,
+    borderRadius: 20,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -274,6 +269,27 @@ const styles = StyleSheet.create({
   profileText: {
     marginLeft: 10,
     // marginTop: 10,
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 15,
+  },
+  generateBtn: {
+    // borderWidth: 0.1,
+    padding: 12,
+    // paddingLeft: 5,
+    // paddingRight: 5,
+    borderRadius: 16,
+    backgroundColor: '#eeffff',
+  },
+  generateText: {
+    fontSize: 14,
+    fontWeight: 500,
+  },
+  signOutText: {
+    fontSize: 18,
+    fontWeight: 700,
   }
 });
 
